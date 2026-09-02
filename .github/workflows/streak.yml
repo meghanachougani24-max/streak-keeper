@@ -1,0 +1,26 @@
+name: Daily Streak Commit
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update log file
+        run: |
+          echo "Commit on $(date -u)" >> streak-log.txt
+
+      - name: Commit and push
+        run: |
+          git config user.name "meghanachougani24-max"
+          git config user.email "meghanachougani24@gmail.com"
+          git add streak-log.txt
+          git commit -m "Daily streak update: $(date -u +'%Y-%m-%d')"
+          git push
